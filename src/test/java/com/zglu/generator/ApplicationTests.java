@@ -1,5 +1,6 @@
 package com.zglu.generator;
 
+import com.zglu.generator.generator.GeneratorService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

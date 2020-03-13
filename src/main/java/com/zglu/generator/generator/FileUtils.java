@@ -1,4 +1,4 @@
-package com.zglu.generator;
+package com.zglu.generator.generator;
 
 import lombok.extern.log4j.Log4j2;
 

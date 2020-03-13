@@ -1,6 +1,5 @@
-package com.zglu.generator;
+package com.zglu.generator.generator;
 
-import com.zglu.generator.entity.Columns;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;

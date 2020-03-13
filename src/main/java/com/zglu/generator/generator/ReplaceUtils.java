@@ -1,4 +1,4 @@
-package com.zglu.generator;
+package com.zglu.generator.generator;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
@@ -30,6 +30,16 @@ public class ReplaceUtils {
      */
     public static String getPackageName(String tableName) {
         return tableName.replace("_", "");
+    }
+
+    /**
+     * 根据表名生成url名
+     *
+     * @param tableName 表名
+     * @return url名
+     */
+    public static String getUrlName(String tableName) {
+        return tableName.replace("_", "-");
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.zglu.generator.entity;
+package com.zglu.generator.generator;
 
 import lombok.Data;
 

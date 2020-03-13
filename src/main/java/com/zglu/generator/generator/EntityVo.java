@@ -1,6 +1,5 @@
-package com.zglu.generator;
+package com.zglu.generator.generator;
 
-import com.zglu.generator.entity.Columns;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
@@ -14,27 +13,39 @@ import java.util.stream.Collectors;
  */
 @Data
 public class EntityVo {
-    private String fileName;
     private String packageName;
     private String importString;
+    private String author;
     private String tableName;
+    private String tableComment = "未取值";
+    private String tableNameMid;
     private String className;
+    private String valName;
     private String fieldString;
+    private String columnString;
+    private String fieldString4Mapper;
+    private String updateString4Mapper;
 
     public EntityVo(String tableName, List<Columns> columnsList, GeneratorConfig generatorConfig) {
+        this.author = generatorConfig.getAuthor();
         this.tableName = tableName;
+        this.tableNameMid = ReplaceUtils.getUrlName(this.tableName);
         this.className = ReplaceUtils.getClassName(this.tableName);
-        this.fileName = className + ".java";
-        this.packageName = ReplaceUtils.getPackageName(tableName);
+        this.valName = ReplaceUtils.getFieldName(this.tableName);
+        this.packageName = ReplaceUtils.getPackageName(this.tableName);
         List<FieldVo> fieldVoList = columnsList.stream().map(m -> new FieldVo(m, generatorConfig)).collect(Collectors.toList());
         this.importString = this.getImportStringByField(fieldVoList);
         this.fieldString = this.getFieldStringByField(fieldVoList);
+
+        columnString = columnsList.stream().map(Columns::getColumnName).collect(Collectors.joining(","));
+        fieldString4Mapper = fieldVoList.stream().map(m -> "#{" + m.getName() + "}").collect(Collectors.joining(","));
+        updateString4Mapper = columnsList.stream().map(m -> m.getColumnName() + "=#{" + ReplaceUtils.getFieldName(m.getColumnName()) + "}").collect(Collectors.joining(","));
     }
 
     private String getImportStringByField(List<FieldVo> fieldVoList) {
-        String temp = fieldVoList.stream().flatMap(m -> m.getNeedImport().stream()).distinct().collect(Collectors.joining("\n"));
+        String temp = fieldVoList.stream().flatMap(m -> m.getNeedImport().stream()).distinct().collect(Collectors.joining(";\n"));
         if (!StringUtils.isEmpty(temp)) {
-            temp += "\n";
+            temp += ";\n";
         }
         return temp;
     }

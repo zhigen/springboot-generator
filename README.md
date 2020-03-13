@@ -24,14 +24,15 @@
     3.3、编写mapper.java文件
     3.4、指定需扫描mapper包
     3.5、编写代码生成相关
-        3.5.1、编写配置类
-        3.5.2、添加配置项
-        3.5.3、编写java字段对象类
-        3.5.4、编写实体对象类
+        3.5.1、编写配置类GeneratorConfig
+        3.5.2、添加配置项application.properties
+        3.5.3、编写java字段对象类FieldVo
+        3.5.4、编写实体对象类EntityVo
         3.5.5、编写模版
-        3.5.6、编写字符替换工具类
-        3.5.7、编写文件生成工具类
+        3.5.6、编写字符替换工具类ReplaceUtils
+        3.5.7、编写文件生成工具类FileUtils
+        3.5.8、编写代码生成实现类GeneratorService
 
 ## <div id="04"></div>
 ## 4 测试  
-> 运行测试类          
+> 运行测试类ApplicationTests

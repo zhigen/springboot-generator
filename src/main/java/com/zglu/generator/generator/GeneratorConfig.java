@@ -1,4 +1,4 @@
-package com.zglu.generator;
+package com.zglu.generator.generator;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,6 +18,10 @@ public class GeneratorConfig {
     private String first;
     private String database;
     private String[] tables;
+    private String author;
+    private String templatePath;
+    private String targetPath;
+    private String targetDir;
     private String nullableTrue;
     private String defaultBitTrue;
     private Map<String, String> field;
