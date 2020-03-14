@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @Log4j2
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@MapperScan(value = "com.zglu.generator.mapper")
+@MapperScan(value = "com.zglu.generator")
 class ApplicationTests {
 
     @Autowired
