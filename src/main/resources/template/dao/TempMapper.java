@@ -3,6 +3,8 @@ package com.zglu.generator.target.{packageName}.dao;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author {author}
  */
@@ -28,6 +30,15 @@ public interface {className}Mapper {
      */
     @Select("select * from {tableName} where id = #{id}")
     {className} select(@Param("id") long id);
+
+    /**
+     * R
+     *
+     * @param whereSql where语句
+     * @return 记录
+     */
+    @Select("select * from {tableName} ${whereSql}")
+    List<{className}> selectList(@Param("whereSql") String whereSql);
 
     /**
      * U

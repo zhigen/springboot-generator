@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.zglu.generator.generator.ReplaceUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,20 @@ public class {className}Dao {
 
     public {className} select(long id) {
         return {valName}Mapper.select(id);
+    }
+
+    public List<{className}> selectList(String where, String orderBy, Integer offset, Integer limit) {
+        String whereSql = "";
+        if (StringUtils.hasText(where)) {
+            whereSql += "where " + ReplaceUtils.getColumnName(where) + " ";
+        }
+        if (StringUtils.hasText(orderBy)) {
+            whereSql += "order by " + ReplaceUtils.getColumnName(orderBy) + " ";
+        }
+        if (offset != null && limit != null) {
+            whereSql += "limit " + limit + " offset " + offset;
+        }
+        return {valName}Mapper.selectList(whereSql);
     }
 
     public boolean updateAll({className} {valName}) {

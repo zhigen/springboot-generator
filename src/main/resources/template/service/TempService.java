@@ -5,6 +5,8 @@ import com.zglu.generator.target.{packageName}.dao.{className}Dao;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author {author}
  */
@@ -19,6 +21,10 @@ public class {className}Service {
 
     public {className} get(long id) {
         return {valName}Dao.select(id);
+    }
+
+    public List<{className}> get(String where, String orderBy, Integer offset, Integer limit) {
+        return {valName}Dao.selectList(where, orderBy, offset, limit);
     }
 
     public boolean put({className} {valName}) {

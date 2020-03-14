@@ -44,7 +44,7 @@ public class ClassVo {
 
     private String getImportStringByField(List<FieldVo> fieldVoList) {
         String temp = fieldVoList.stream().flatMap(m -> m.getNeedImport().stream()).distinct().collect(Collectors.joining(";\n"));
-        if (!StringUtils.isEmpty(temp)) {
+        if (StringUtils.hasText(temp)) {
             temp += ";\n";
         }
         return temp;
@@ -52,7 +52,7 @@ public class ClassVo {
 
     private String getFieldStringByField(List<FieldVo> fieldVoList) {
         String temp = fieldVoList.stream().map(FieldVo::toString).collect(Collectors.joining("\n"));
-        if (!StringUtils.isEmpty(temp)) {
+        if (StringUtils.hasText(temp)) {
             temp += "\n";
         }
         return temp;

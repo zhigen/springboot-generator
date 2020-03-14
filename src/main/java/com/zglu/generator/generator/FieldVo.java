@@ -55,7 +55,7 @@ public class FieldVo {
     private void addNeedImport(GeneratorConfig generatorConfig, String key) {
         Map<String, String> importMap = generatorConfig.getImportMap();
         String importTemp = importMap.get(key);
-        if (!StringUtils.isEmpty(importTemp)) {
+        if (StringUtils.hasText(importTemp)) {
             this.needImport.add(importTemp);
         }
     }
@@ -63,7 +63,7 @@ public class FieldVo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if (!StringUtils.isEmpty(this.comment)) {
+        if (StringUtils.hasText(this.comment)) {
             sb.append(this.tab).append("/**").append("\n");
             sb.append(this.tab).append(" * ").append(this.comment).append("\n");
             sb.append(this.tab).append(" */").append("\n");

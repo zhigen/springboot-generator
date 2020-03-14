@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author {author}
  */
@@ -31,6 +33,18 @@ public class {className}Controller {
     })
     public {className} get(@PathVariable long id) {
         return {valName}Service.get(id);
+    }
+
+    @GetMapping("/{tableNameMid}")
+    @ApiOperation("查列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "where", value = "条件，除属性驼峰外全小写", defaultValue = "id > 10"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "orderBy", value = "排序，除属性驼峰外全小写", defaultValue = "id desc"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "offset", value = "偏移量", defaultValue = "0"),
+            @ApiImplicitParam(paramType = "query", dataType = "String", name = "limit", value = "行数", defaultValue = "3"),
+    })
+    public List<{className}> get(String where, String orderBy, Integer offset, Integer limit) {
+        return {valName}Service.get(where, orderBy, offset, limit);
     }
 
     @PutMapping("/{tableNameMid}")
