@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 实体类属性对象
+ * 属性数据对象
  *
  * @author zglu
  */

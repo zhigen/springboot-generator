@@ -26,17 +26,21 @@ public class GeneratorService {
     public void generate() {
         // 查询表字段
         List<Columns> list;
+        List<Tables> tablesList;
         if (generatorConfig.getTables().length > 0) {
             list = columnsMapper.findByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
+            tablesList = columnsMapper.findTablesByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
         } else {
             list = columnsMapper.findByTableSchema(generatorConfig.getDatabase());
+            tablesList = columnsMapper.findTablesByTableSchema(generatorConfig.getDatabase());
         }
         // 按表分组字段
         Map<String, List<Columns>> map = list.stream().collect(Collectors.groupingBy(Columns::getTableName));
+        Map<String, String> tablesMap = tablesList.stream().collect(Collectors.toMap(Tables::getTableName, Tables::getTableComment));
         // 按表生成
         map.forEach((k, v) -> {
             try {
-                this.createEntityMybatis(generatorConfig, k, v);
+                this.createFiles(generatorConfig, k, v, tablesMap.get(k));
             } catch (IOException e) {
                 log.info(e);
             }
@@ -44,60 +48,60 @@ public class GeneratorService {
     }
 
     /**
-     * 创建实体类
+     * 创建类
      *
      * @param generatorConfig 生成配置
      * @param tableName       表名
      * @param list            字段数组
      * @throws IOException io异常
      */
-    public void createEntityMybatis(GeneratorConfig generatorConfig, String tableName, List<Columns> list) throws IOException {
+    public void createFiles(GeneratorConfig generatorConfig, String tableName, List<Columns> list, String tableComment) throws IOException {
         log.info("开始生成" + tableName + "数据");
-        String first = generatorConfig.getFirst();
-        log.info("生成Entity数据");
-        EntityVo entityData = new EntityVo(tableName, list, generatorConfig);
+        log.info("生成Class数据");
+        ClassVo classVo = new ClassVo(tableName, list, generatorConfig, tableComment);
+
         log.info("读取Entity模版");
-        String content = FileUtils.getTemplate(first + generatorConfig.getTemplatePath() + "/dao", "Temp.java");
-        content = ReplaceUtils.replaceContent(content, entityData);
+        String content = FileUtils.getTemplate(generatorConfig.getTemplatePath() + "/dao", "Temp.java");
+        content = ReplaceUtils.replaceContent(content, classVo);
         log.info("生成Entity文件");
-        String targetDir = FileUtils.createDir(first + generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), entityData.getPackageName(), "dao");
-        Path path = FileUtils.create(targetDir, entityData.getClassName() + ".java", false);
+        String targetDir = FileUtils.createDir(generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), classVo.getPackageName(), "dao");
+        Path path = FileUtils.create(targetDir, classVo.getClassName() + ".java", false);
         log.info("写入Entity文件");
         FileUtils.write(path, content);
 
         log.info("读取mapper模版");
-        content = FileUtils.getTemplate(first + generatorConfig.getTemplatePath() + "/dao", "TempMapper.java");
-        content = ReplaceUtils.replaceContent(content, entityData);
+        content = FileUtils.getTemplate(generatorConfig.getTemplatePath() + "/dao", "TempMapper.java");
+        content = ReplaceUtils.replaceContent(content, classVo);
         log.info("生成mapper文件");
-        targetDir = FileUtils.createDir(first + generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), entityData.getPackageName(), "dao");
-        path = FileUtils.create(targetDir, entityData.getClassName() + "Mapper.java", false);
+        targetDir = FileUtils.createDir(generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), classVo.getPackageName(), "dao");
+        path = FileUtils.create(targetDir, classVo.getClassName() + "Mapper.java", false);
         log.info("写入mapper文件");
         FileUtils.write(path, content);
 
         log.info("读取dao模版");
-        content = FileUtils.getTemplate(first + generatorConfig.getTemplatePath() + "/dao", "TempDao.java");
-        content = ReplaceUtils.replaceContent(content, entityData);
+        content = FileUtils.getTemplate(generatorConfig.getTemplatePath() + "/dao", "TempDao.java");
+        content = ReplaceUtils.replaceContent(content, classVo);
         log.info("生成dao文件");
-        targetDir = FileUtils.createDir(first + generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), entityData.getPackageName(), "dao");
-        path = FileUtils.create(targetDir, entityData.getClassName() + "Dao.java", false);
+        targetDir = FileUtils.createDir(generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), classVo.getPackageName(), "dao");
+        path = FileUtils.create(targetDir, classVo.getClassName() + "Dao.java", false);
         log.info("写入dao文件");
         FileUtils.write(path, content);
 
         log.info("读取service模版");
-        content = FileUtils.getTemplate(first + generatorConfig.getTemplatePath() + "/service", "TempService.java");
-        content = ReplaceUtils.replaceContent(content, entityData);
+        content = FileUtils.getTemplate(generatorConfig.getTemplatePath() + "/service", "TempService.java");
+        content = ReplaceUtils.replaceContent(content, classVo);
         log.info("生成service文件");
-        targetDir = FileUtils.createDir(first + generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), entityData.getPackageName(), "service");
-        path = FileUtils.create(targetDir, entityData.getClassName() + "Service.java", false);
+        targetDir = FileUtils.createDir(generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), classVo.getPackageName(), "service");
+        path = FileUtils.create(targetDir, classVo.getClassName() + "Service.java", false);
         log.info("写入service文件");
         FileUtils.write(path, content);
 
         log.info("读取controller模版");
-        content = FileUtils.getTemplate(first + generatorConfig.getTemplatePath() + "/controller", "TempController.java");
-        content = ReplaceUtils.replaceContent(content, entityData);
+        content = FileUtils.getTemplate(generatorConfig.getTemplatePath() + "/controller", "TempController.java");
+        content = ReplaceUtils.replaceContent(content, classVo);
         log.info("生成controller文件");
-        targetDir = FileUtils.createDir(first + generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), entityData.getPackageName(), "controller");
-        path = FileUtils.create(targetDir, entityData.getClassName() + "Controller.java", false);
+        targetDir = FileUtils.createDir(generatorConfig.getTargetPath(), generatorConfig.getTargetDir(), classVo.getPackageName(), "controller");
+        path = FileUtils.create(targetDir, classVo.getClassName() + "Controller.java", false);
         log.info("写入controller文件");
         FileUtils.write(path, content);
     }

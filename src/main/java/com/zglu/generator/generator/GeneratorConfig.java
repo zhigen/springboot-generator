@@ -15,12 +15,12 @@ import java.util.Map;
 @EnableConfigurationProperties({GeneratorConfig.class})
 @ConfigurationProperties(prefix = "generator.config")
 public class GeneratorConfig {
-    private String first;
+    private String first = System.getProperty("user.dir");
     private String database;
     private String[] tables;
     private String author;
-    private String templatePath;
-    private String targetPath;
+    private String templatePath = first + "/src/main/resources/template";
+    private String targetPath = first + "/src/main/java/com/zglu/generator";
     private String targetDir;
     private String nullableTrue;
     private String defaultBitTrue;
