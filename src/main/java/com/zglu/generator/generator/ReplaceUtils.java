@@ -21,6 +21,7 @@ public class ReplaceUtils {
     }
 
     public static final Pattern PATTERN_W = Pattern.compile("_(\\w)");
+    public static final Pattern PATTERN_G = Pattern.compile("[A-Z]");
 
     /**
      * 根据表名生成包名
@@ -54,6 +55,23 @@ public class ReplaceUtils {
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
+    /**
+     * java字段转换成数据库字段
+     *
+     * @param fieldName 属性名
+     * @return 字段名
+     */
+    public static String getColumnName(String fieldName) {
+        String str = Optional.ofNullable(fieldName).orElse("");
+        Matcher matcher = PATTERN_G.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
         }
         matcher.appendTail(sb);
         return sb.toString();

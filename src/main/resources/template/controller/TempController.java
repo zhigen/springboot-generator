@@ -34,9 +34,15 @@ public class {className}Controller {
     }
 
     @PutMapping("/{tableNameMid}")
-    @ApiOperation("改")
+    @ApiOperation("覆盖改")
     public boolean put(@RequestBody {className} {valName}) {
         return {valName}Service.put({valName});
+    }
+
+    @PatchMapping("/{tableNameMid}")
+    @ApiOperation("改")
+    public boolean set(@RequestBody {className} {valName}) {
+        return {valName}Service.set({valName});
     }
 
     @DeleteMapping("/{tableNameMid}/{id}")

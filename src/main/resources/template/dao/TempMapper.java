@@ -38,7 +38,19 @@ public interface {className}Mapper {
     @Update("update {tableName} set " +
             "{updateString4Mapper} " +
             "where id=#{id}")
-    long update({className} {valName});
+    long updateAll({className} {valName});
+
+    /**
+     * U
+     *
+     * @param setSql set语句
+     * @param id     记录id
+     * @return 影响行数
+     */
+    @Update("update {tableName} set " +
+            "${setSql} " +
+            "where id=#{id}")
+    long update(@Param("setSql") String setSql, @Param("id") long id);
 
     /**
      * D

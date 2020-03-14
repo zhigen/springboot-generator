@@ -22,6 +22,10 @@ public class {className}Service {
     }
 
     public boolean put({className} {valName}) {
+        return {valName}Dao.updateAll({valName});
+    }
+
+    public boolean set({className} {valName}) {
         return {valName}Dao.update({valName});
     }
 
