@@ -24,6 +24,8 @@ public class GeneratorConfig {
     private String targetDir;
     private String nullableTrue;
     private String defaultBitTrue;
+    private String sqlLineFeed = ", \" +\n            \"";
+    private int insertSqlLineSize = 5;
     private Map<String, String> field;
     private Map<String, String> importMap;
     private Map<String, String> valueMap;

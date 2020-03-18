@@ -20,8 +20,8 @@ public class ReplaceUtils {
     private ReplaceUtils() {
     }
 
-    public static final Pattern PATTERN_W = Pattern.compile("_(\\w)");
-    public static final Pattern PATTERN_G = Pattern.compile("[A-Z]");
+    public static final Pattern PATTERN_UNDERLINE = Pattern.compile("_(\\w)");
+    public static final Pattern PATTERN_UPPERCASE = Pattern.compile("[A-Z]");
 
     /**
      * 根据表名生成包名
@@ -51,7 +51,7 @@ public class ReplaceUtils {
      */
     public static String getFieldName(String columnName) {
         String str = Optional.ofNullable(columnName).orElse("").toLowerCase();
-        Matcher matcher = PATTERN_W.matcher(str);
+        Matcher matcher = PATTERN_UNDERLINE.matcher(str);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
@@ -61,14 +61,14 @@ public class ReplaceUtils {
     }
 
     /**
-     * java字段转换成数据库字段
+     * java属性名转换成数据库字段名
      *
      * @param fieldName 属性名
      * @return 字段名
      */
     public static String getColumnName(String fieldName) {
         String str = Optional.ofNullable(fieldName).orElse("");
-        Matcher matcher = PATTERN_G.matcher(str);
+        Matcher matcher = PATTERN_UPPERCASE.matcher(str);
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
@@ -96,20 +96,6 @@ public class ReplaceUtils {
     public static String getClassName(String tableName) {
         String letter = getFieldName(tableName);
         return upperFirstLatter(letter);
-    }
-
-    /**
-     * 替换
-     *
-     * @param content      模板内容
-     * @param replacements 替换内容
-     * @return 替换后内容
-     */
-    public static String replaceContent(String content, String... replacements) {
-        for (int i = 0; i < replacements.length; i++) {
-            content = content.replace("{" + i + "}", replacements[i]);
-        }
-        return content;
     }
 
     /**

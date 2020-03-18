@@ -10,7 +10,7 @@ import java.util.List;
  * @author zglu
  */
 @Component
-public interface ColumnsMapper {
+public interface TableSchemaMapper {
 
     /**
      * 查询记录

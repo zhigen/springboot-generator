@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GeneratorService {
 
-    private final ColumnsMapper columnsMapper;
+    private final TableSchemaMapper tableSchemaMapper;
     private final GeneratorConfig generatorConfig;
 
     public void generate() {
@@ -28,11 +28,11 @@ public class GeneratorService {
         List<Columns> list;
         List<Tables> tablesList;
         if (generatorConfig.getTables().length > 0) {
-            list = columnsMapper.findByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
-            tablesList = columnsMapper.findTablesByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
+            list = tableSchemaMapper.findByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
+            tablesList = tableSchemaMapper.findTablesByTableSchemaAndTableNameIn(generatorConfig.getDatabase(), String.join(",", generatorConfig.getTables()));
         } else {
-            list = columnsMapper.findByTableSchema(generatorConfig.getDatabase());
-            tablesList = columnsMapper.findTablesByTableSchema(generatorConfig.getDatabase());
+            list = tableSchemaMapper.findByTableSchema(generatorConfig.getDatabase());
+            tablesList = tableSchemaMapper.findTablesByTableSchema(generatorConfig.getDatabase());
         }
         // 按表分组字段
         Map<String, List<Columns>> map = list.stream().collect(Collectors.groupingBy(Columns::getTableName));

@@ -17,10 +17,10 @@ public interface {className}Mapper {
      * @param {valName} 记录
      * @return 影响行数
      */
-    @Insert("insert into {tableName}({columnString}) " +
-            "values({fieldString4Mapper})")
-    @SelectKey(statement = "select last_insert_id()", keyProperty = "id", before = false, resultType = long.class)
-    long insert({className} {valName});
+    @Insert("INSERT INTO {tableName}({columnString}) " +
+            "VALUES({fieldString4Mapper})")
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = long.class)
+    int save({className} {valName});
 
     /**
      * R
@@ -28,17 +28,26 @@ public interface {className}Mapper {
      * @param id 记录id
      * @return 记录
      */
-    @Select("select * from {tableName} where id = #{id}")
-    {className} select(@Param("id") long id);
+    @Select("SELECT * FROM {tableName} WHERE id = #{id}")
+    {className} findById(@Param("id") long id);
 
     /**
      * R
      *
-     * @param whereSql where语句
-     * @return 记录
+     * @param searchSql 搜索语句
+     * @return 记录集
      */
-    @Select("select * from {tableName} ${whereSql}")
-    List<{className}> selectList(@Param("whereSql") String whereSql);
+    @Select("SELECT * FROM {tableName} ${searchSql}")
+    List<{className}> findAll(@Param("searchSql") String searchSql);
+
+    /**
+     * count
+     *
+     * @param searchSql 搜索语句
+     * @return 记录总数
+     */
+    @Select("SELECT COUNT(id) FROM {tableName} ${searchSql}")
+    long count(@Param("searchSql") String searchSql);
 
     /**
      * U
@@ -46,22 +55,21 @@ public interface {className}Mapper {
      * @param {valName} 记录
      * @return 影响行数
      */
-    @Update("update {tableName} set " +
-            "{updateString4Mapper} " +
-            "where id=#{id}")
-    long updateAll({className} {valName});
+    @Update("UPDATE {tableName} SET " +
+            "{mapperUpdateAllString} " +
+            "WHERE id = #{id}")
+    int updateAll({className} {valName});
 
     /**
      * U
      *
-     * @param setSql set语句
-     * @param id     记录id
+     * @param {valName} 记录
      * @return 影响行数
      */
-    @Update("update {tableName} set " +
-            "${setSql} " +
-            "where id=#{id}")
-    long update(@Param("setSql") String setSql, @Param("id") long id);
+    @Update("UPDATE {tableName} SET " +
+            "{mapperUpdateString} " +
+            "WHERE id = #{id}")
+    int update({className} {valName});
 
     /**
      * D
@@ -69,6 +77,6 @@ public interface {className}Mapper {
      * @param id 记录id
      * @return 影响行数
      */
-    @Delete("delete from {tableName} where id=#{id}")
-    long delete(@Param("id") long id);
+    @Delete("DELETE FROM {tableName} WHERE id = #{id}")
+    int deleteById(@Param("id") long id);
 }

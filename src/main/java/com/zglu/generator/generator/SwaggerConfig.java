@@ -20,8 +20,8 @@ public class SwaggerConfig {
     @Bean
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API")
-                .description("接口文档")
+                .title("generator")
+                .description("测试文档")
                 .version("1")
                 .build();
     }

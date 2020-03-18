@@ -14,7 +14,7 @@ public class GeneratorController {
 
     private final GeneratorService generatorService;
 
-    @PostMapping()
+    @PostMapping
     @ApiOperation("生成代码")
     public void generate() {
         generatorService.generate();
