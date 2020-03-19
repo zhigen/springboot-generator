@@ -10,7 +10,7 @@ import java.util.List;
  * @author zglu
  */
 @Component
-public interface TableSchemaMapper {
+public interface ColumnsMapper {
 
     /**
      * 查询记录
@@ -30,23 +30,4 @@ public interface TableSchemaMapper {
      */
     @Select("select * from columns where TABLE_SCHEMA = #{tableSchema} and TABLE_NAME in (${tableNames})")
     List<Columns> findByTableSchemaAndTableNameIn(@Param("tableSchema") String tableSchema, @Param("tableNames") String tableNames);
-
-    /**
-     * 查询记录
-     *
-     * @param tableSchema 库名
-     * @return 记录
-     */
-    @Select("select * from tables where TABLE_SCHEMA = #{tableSchema}")
-    List<Tables> findTablesByTableSchema(@Param("tableSchema") String tableSchema);
-
-    /**
-     * 查询记录
-     *
-     * @param tableSchema 库名
-     * @param tableNames  表名，支持多个，逗号隔开
-     * @return 记录
-     */
-    @Select("select * from tables where TABLE_SCHEMA = #{tableSchema} and TABLE_NAME in (${tableNames})")
-    List<Tables> findTablesByTableSchemaAndTableNameIn(@Param("tableSchema") String tableSchema, @Param("tableNames") String tableNames);
 }
