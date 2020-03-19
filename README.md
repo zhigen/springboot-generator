@@ -23,9 +23,9 @@
 ## <div id="03"></div>
 ## 3 编写代码
     3.1、pom.xml文件引入依赖
-    3.2、application.properties添加配置项
-    3.3、编写mapper.java文件
-    3.4、Application指定需扫描mapper包
+    3.2 配置多数据源
+    3.3、application.properties添加配置项
+    3.4、编写mapper.java文件
     3.5、编写代码生成相关
         3.5.1、编写配置类GeneratorConfig
         3.5.2、添加配置项application.properties
@@ -39,5 +39,5 @@
 ## <div id="04"></div>
 ## 4 测试
     4.1、http://localhost:8080/swagger-ui.html生成文件
-    4.2、文件生成成功，修改application.properties数据库连接属性，将数据库指定为生成类所在库
+    4.2、文件生成成功，重启服务
     4.3、刷新http://localhost:8080/swagger-ui.html
