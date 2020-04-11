@@ -71,4 +71,13 @@ public class FieldVo {
         sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name, "=", this.value + ";"));
         return sb.toString();
     }
+
+    public String toDtoString() {
+        StringBuilder sb = new StringBuilder();
+        if (StringUtils.hasText(this.comment)) {
+            sb.append(this.tab).append("@ApiModelProperty(\"").append(this.comment).append("\")").append("\n");
+        }
+        sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name + ";"));
+        return sb.toString();
+    }
 }

@@ -16,12 +16,14 @@ public class ClassVo {
     private String packageName;
     private String importString;
     private String author;
+    private String applicationName;
     private String tableName;
     private String tableComment;
     private String tableNameMid;
     private String className;
     private String valName;
     private String fieldString;
+    private String dtoFieldString;
     private String columnString;
     private String fieldString4Mapper;
     private String mapperUpdateAllString;
@@ -29,15 +31,18 @@ public class ClassVo {
 
     public ClassVo(String tableName, List<Columns> columnsList, GeneratorConfig generatorConfig, String tableComment) {
         this.author = generatorConfig.getAuthor();
+        this.applicationName = generatorConfig.getApplicationName();
         this.tableName = tableName;
         this.tableComment = tableComment;
-        this.tableNameMid = ReplaceUtils.getUrlName(this.tableName);
-        this.className = ReplaceUtils.getClassName(this.tableName);
-        this.valName = ReplaceUtils.getFieldName(this.tableName);
-        this.packageName = ReplaceUtils.getPackageName(this.tableName);
+        String notPrefix = this.tableName.replaceFirst(generatorConfig.getPrefix(), "");
+        this.tableNameMid = ReplaceUtils.getUrlName(notPrefix);
+        this.className = ReplaceUtils.getClassName(notPrefix);
+        this.valName = ReplaceUtils.getFieldName(notPrefix);
+        this.packageName = ReplaceUtils.getPackageName(notPrefix);
         List<FieldVo> fieldVoList = columnsList.stream().map(m -> new FieldVo(m, generatorConfig)).collect(Collectors.toList());
         this.importString = this.getImportStringByField(fieldVoList);
         this.fieldString = this.getFieldStringByField(fieldVoList);
+        this.dtoFieldString = this.getDtoFieldStringByField(fieldVoList);
         this.columnString = this.getColumnStringByColumn(columnsList, generatorConfig);
         fieldString4Mapper = this.getFieldString4MapperByField(fieldVoList, generatorConfig);
         mapperUpdateAllString = columnsList.stream().map(m -> m.getColumnName() + " = #{" + ReplaceUtils.getFieldName(m.getColumnName()) + "}").collect(Collectors.joining(generatorConfig.getSqlLineFeed()));
@@ -54,6 +59,14 @@ public class ClassVo {
 
     private String getFieldStringByField(List<FieldVo> fieldVoList) {
         String temp = fieldVoList.stream().map(FieldVo::toString).collect(Collectors.joining("\n"));
+        if (StringUtils.hasText(temp)) {
+            temp += "\n";
+        }
+        return temp;
+    }
+
+    private String getDtoFieldStringByField(List<FieldVo> fieldVoList) {
+        String temp = fieldVoList.stream().map(FieldVo::toDtoString).collect(Collectors.joining("\n"));
         if (StringUtils.hasText(temp)) {
             temp += "\n";
         }

@@ -18,7 +18,10 @@ public class GeneratorConfig {
     private String first = System.getProperty("user.dir");
     private String database;
     private String[] tables;
+    private String prefix;
     private String author;
+    private String use;
+    private String applicationName;
     private String templatePath = first + "/src/main/resources/template";
     private String targetPath = first + "/src/main/java/com/zglu/generator";
     private String targetDir;
