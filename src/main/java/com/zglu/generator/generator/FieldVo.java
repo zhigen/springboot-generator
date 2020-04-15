@@ -23,6 +23,7 @@ public class FieldVo {
     private String type;
     private String name;
     private String value;
+    private boolean required;
 
     public FieldVo(Columns columns, GeneratorConfig generatorConfig) {
         this.comment = columns.getColumnComment();
@@ -49,7 +50,10 @@ public class FieldVo {
         } else {
             // 非空
             this.value = valueMap.get(this.type + "-new");
+            // 非空时，不帮初始默认值了，通过sql报错提醒未设值字段
+            this.value = "null";
         }
+        required = !generatorConfig.getNullableTrue().equals(isNullable);
     }
 
     private void addNeedImport(GeneratorConfig generatorConfig, String key) {
@@ -74,8 +78,10 @@ public class FieldVo {
 
     public String toDtoString() {
         StringBuilder sb = new StringBuilder();
-        if (StringUtils.hasText(this.comment)) {
+        if (required) {
             sb.append(this.tab).append("@ApiModelProperty(\"").append(this.comment).append("\")").append("\n");
+        } else {
+            sb.append(this.tab).append("@ApiModelProperty(value = \"").append(this.comment).append("\", required = true)").append("\n");
         }
         sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name + ";"));
         return sb.toString();
