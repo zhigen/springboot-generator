@@ -79,9 +79,9 @@ public class FieldVo {
     public String toDtoString() {
         StringBuilder sb = new StringBuilder();
         if (required) {
-            sb.append(this.tab).append("@ApiModelProperty(\"").append(this.comment).append("\")").append("\n");
-        } else {
             sb.append(this.tab).append("@ApiModelProperty(value = \"").append(this.comment).append("\", required = true)").append("\n");
+        } else {
+            sb.append(this.tab).append("@ApiModelProperty(\"").append(this.comment).append("\")").append("\n");
         }
         sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name + ";"));
         return sb.toString();
