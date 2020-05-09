@@ -64,6 +64,18 @@ public class FieldVo {
         }
     }
 
+//    @Override
+//    public String toString() {
+//        StringBuilder sb = new StringBuilder();
+//        if (StringUtils.hasText(this.comment)) {
+//            sb.append(this.tab).append("/**").append("\n");
+//            sb.append(this.tab).append(" * ").append(this.comment).append("\n");
+//            sb.append(this.tab).append(" */").append("\n");
+//        }
+//        sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name, "=", this.value + ";"));
+//        return sb.toString();
+//    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,7 +84,18 @@ public class FieldVo {
             sb.append(this.tab).append(" * ").append(this.comment).append("\n");
             sb.append(this.tab).append(" */").append("\n");
         }
-        sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name, "=", this.value + ";"));
+        if ("createdDate".equals(this.name)) {
+            sb.append(this.tab).append("@TableField(fill = FieldFill.INSERT)").append("\n");
+        } else if ("lastModifiedDate".equals(this.name)) {
+            sb.append(this.tab).append("@TableField(fill = FieldFill.INSERT_UPDATE)").append("\n");
+        } else if ("enable".equals(this.name)) {
+            sb.append(this.tab).append("@TableField(fill = FieldFill.INSERT)").append("\n");
+            sb.append(this.tab).append("@TableLogic(value = \"1\", delval = \"0\")").append("\n");
+        } else if ("deleted".equals(this.name)) {
+            sb.append(this.tab).append("@TableField(fill = FieldFill.INSERT)").append("\n");
+            sb.append(this.tab).append("@TableLogic(value = \"1\", delval = \"0\")").append("\n");
+        }
+        sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name + ";"));
         return sb.toString();
     }
 
