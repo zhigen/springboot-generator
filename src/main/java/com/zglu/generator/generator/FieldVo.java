@@ -93,7 +93,7 @@ public class FieldVo {
             sb.append(this.tab).append("@TableLogic(value = \"1\", delval = \"0\")").append("\n");
         } else if ("deleted".equals(this.name)) {
             sb.append(this.tab).append("@TableField(fill = FieldFill.INSERT)").append("\n");
-            sb.append(this.tab).append("@TableLogic(value = \"1\", delval = \"0\")").append("\n");
+            sb.append(this.tab).append("@TableLogic(value = \"0\", delval = \"1\")").append("\n");
         }
         sb.append(this.tab).append(String.join(" ", this.modifier, this.type, this.name + ";"));
         return sb.toString();
